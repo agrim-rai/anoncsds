@@ -12,7 +12,7 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       if (account?.provider === 'google' && user.email) {
         // Check if email is valid
         if (!isValidEmail(user.email)) {
@@ -41,7 +41,7 @@ const handler = NextAuth({
       }
       return false;
     },
-    async session({ session, token }) {
+    async session({ session }) {
       if (session.user?.email) {
         try {
           await connectDB();

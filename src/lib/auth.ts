@@ -2,6 +2,14 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 import jwt from 'jsonwebtoken';
 
+interface JWTPayload {
+  [key: string]: unknown;
+}
+
+interface JWTVerificationResult {
+  [key: string]: unknown;
+}
+
 export function isValidEmail(email: string): boolean {
   // Check if email ends with nsut.ac.in
   if (!email.endsWith('@nsut.ac.in')) {
@@ -22,12 +30,12 @@ export function isValidEmail(email: string): boolean {
   }
 }
 
-export function generateJWT(payload: any): string {
+export function generateJWT(payload: JWTPayload): string {
   const secret = process.env.NEXTAUTH_SECRET!;
   return jwt.sign(payload, secret, { expiresIn: '24h' });
 }
 
-export function verifyJWT(token: string): any {
+export function verifyJWT(token: string): JWTVerificationResult {
   const secret = process.env.NEXTAUTH_SECRET!;
-  return jwt.verify(token, secret);
+  return jwt.verify(token, secret) as JWTVerificationResult;
 }

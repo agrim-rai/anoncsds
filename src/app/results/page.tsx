@@ -25,7 +25,7 @@ interface ResultsData {
 }
 
 export default function Results() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const [results, setResults] = useState<ResultsData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -100,6 +100,13 @@ export default function Results() {
                 className="text-blue-400 hover:text-blue-300 transition-colors px-3 py-2 rounded-lg hover:bg-gray-700/50"
               >
                 Back to Voting
+              </button>
+              <button
+                onClick={() => router.push('/live')}
+                className="text-red-400 hover:text-red-300 transition-colors px-3 py-2 rounded-lg hover:bg-gray-700/50 flex items-center space-x-1"
+              >
+                <div className="h-2 w-2 bg-red-500 rounded-full animate-pulse"></div>
+                <span>Live Count</span>
               </button>
               <button
                 onClick={fetchResults}

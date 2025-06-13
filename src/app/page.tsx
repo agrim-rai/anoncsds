@@ -18,6 +18,11 @@ interface VotingGroup {
   candidates: Candidate[];
 }
 
+interface UserSession {
+  hasVoted?: boolean;
+  // Add other user properties as needed
+}
+
 export default function Home() {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -36,7 +41,7 @@ export default function Home() {
     }
 
     if (session?.user) {
-      setHasVoted((session.user as any).hasVoted || false);
+      setHasVoted((session.user as UserSession).hasVoted || false);
       fetchCandidates();
     }
   }, [status, session, router]);
@@ -117,12 +122,19 @@ export default function Home() {
                 </div>
                 <h1 className="text-2xl font-bold text-white">NSUT Voting System</h1>
               </div>
-              <div className="flex items-center space-x-4">
-                <span className="text-gray-300 hidden sm:block">Welcome, {session?.user?.name}</span>
-                <button
-                  onClick={handleSignOut}
-                  className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-700/50"
-                >
+                          <div className="flex items-center space-x-4">
+              <button
+                onClick={() => router.push('/live')}
+                className="text-red-400 hover:text-red-300 transition-colors px-3 py-2 rounded-lg hover:bg-gray-700/50 flex items-center space-x-1"
+              >
+                <div className="h-2 w-2 bg-red-500 rounded-full animate-pulse"></div>
+                <span>Live Count</span>
+              </button>
+              <span className="text-gray-300 hidden sm:block">Welcome, {session?.user?.name}</span>
+              <button
+                onClick={handleSignOut}
+                className="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-700/50"
+              >
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                   </svg>
@@ -147,12 +159,21 @@ export default function Home() {
               <p className="text-green-200 mb-8 text-lg leading-relaxed">
                 Thank you for participating in the NSUT student elections. Your vote has been recorded securely and will remain confidential.
               </p>
-                              <button
+                                            <div className="flex space-x-4">
+                <button
                   onClick={() => router.push('/results')}
                   className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 text-lg rounded-xl hover:scale-105 transform transition-all duration-200"
                 >
-                  View Live Results
+                  View Results
                 </button>
+                <button
+                  onClick={() => router.push('/live')}
+                  className="bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-3 text-lg rounded-xl hover:scale-105 transform transition-all duration-200 flex items-center space-x-2"
+                >
+                  <div className="h-3 w-3 bg-white rounded-full animate-pulse"></div>
+                  <span>Live Count</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -180,6 +201,13 @@ export default function Home() {
                 className="text-blue-400 hover:text-blue-300 transition-colors px-3 py-2 rounded-lg hover:bg-gray-700/50"
               >
                 View Results
+              </button>
+              <button
+                onClick={() => router.push('/live')}
+                className="text-red-400 hover:text-red-300 transition-colors px-3 py-2 rounded-lg hover:bg-gray-700/50 flex items-center space-x-1"
+              >
+                <div className="h-2 w-2 bg-red-500 rounded-full animate-pulse"></div>
+                <span>Live Count</span>
               </button>
               <span className="text-gray-300 hidden sm:block">Welcome, {session?.user?.name}</span>
               <button
